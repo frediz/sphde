@@ -1,0 +1,9 @@
+Document: libsphde
+Title: Sphde Developer library
+Author: Sphde team
+Abstract: This manual describes the sphde library.
+Section: Programming
+
+Format: HTML
+Index: /usr/share/doc/libsphde-doc/html/index.html
+Files: /usr/share/doc/libsphde-doc/html/*

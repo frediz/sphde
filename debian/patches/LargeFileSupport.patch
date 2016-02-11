@@ -1,0 +1,12 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -98,6 +98,9 @@
+ # Pthread check (on m4/acx_pthread.m4)
+ ACX_PTHREAD
+ 
++# Ensure support for large files
++AC_SYS_LARGEFILE
++
+ # Doxygen support
+ DX_HTML_FEATURE(ON)
+ DX_MAN_FEATURE(ON)

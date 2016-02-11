@@ -1,0 +1,55 @@
+Source: sphde
+Priority: optional
+Maintainer: Frédéric Bonnard <frediz@linux.vnet.ibm.com>
+Build-Depends: debhelper (>= 9), dh-autoreconf, doxygen, graphviz, pkg-kde-tools
+Standards-Version: 3.9.7
+Section: devel
+Homepage: https://github.com/sphde/sphde
+
+Package: libsphde-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}
+Description: Shared Persistent Heap Data Environment library documentation files
+ SPHDE is composed of two major software layers: The Shared Address Space (SAS)
+ layer provides the basic services for a shared address space and transparent,
+ persistent storage. The Shared Persistent Heap (SPH) layer organizes blocks of
+ SAS storage into useful functions for storing and retrieving data.
+ .
+ This package contains the documentation of library.
+
+Package: libsphde-dev
+Section: libdevel
+Architecture: any
+Depends: libsphde1 (= ${binary:Version}), ${misc:Depends}
+Description: Shared Persistent Heap Data Environment library development files
+ SPHDE is composed of two major software layers: The Shared Address Space (SAS)
+ layer provides the basic services for a shared address space and transparent,
+ persistent storage. The Shared Persistent Heap (SPH) layer organizes blocks of
+ SAS storage into useful functions for storing and retrieving data.
+ .
+ This package contains the static library and header files used in development.
+
+Package: libsphde1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Shared Persistent Heap Data Environment library
+ SPHDE is composed of two major software layers: The Shared Address Space (SAS)
+ layer provides the basic services for a shared address space and transparent,
+ persistent storage. The Shared Persistent Heap (SPH) layer organizes blocks of
+ SAS storage into useful functions for storing and retrieving data.
+ .
+ This package contains the runtime shared library.
+
+Package: sphde-utils
+Section: utils
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Shared Persistent Heap Data Environment library utilities
+ SPHDE is composed of two major software layers: The Shared Address Space (SAS)
+ layer provides the basic services for a shared address space and transparent,
+ persistent storage. The Shared Persistent Heap (SPH) layer organizes blocks of
+ SAS storage into useful functions for storing and retrieving data.
+ .
+ This package contains the SPHDE utilities.
