@@ -525,3 +525,4 @@ libsphde.so.1 libsphde1 #MINVER#
  sphdeGetTID@Base 1.1.0
  sphgetcpufreq@Base 1.1.0
  threadID@Base 1.1.0
+ (optional)_ZN11SasLockListI11SasUserLockPvE8lockNodeES1_22sas_userlock_request_t@Base 1.1.0

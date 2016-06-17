@@ -1,3 +1,11 @@
+sphde (1.1.0-2) unstable; urgency=medium
+
+  * Improved symbol file for better compatibility with Ubuntu and -O3
+    optimisation which removes a symbols on ppc64el. Marking it optional.
+  * Bumped Standards-Version to 3.9.8
+
+ -- Frédéric Bonnard <frediz@linux.vnet.ibm.com>  Fri, 17 Jun 2016 15:08:28 +0200
+
 sphde (1.1.0-1) unstable; urgency=low
 
   * Initial release (Closes: #787491)
