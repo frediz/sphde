@@ -252,6 +252,12 @@ libsphde.so.1 libsphde1 #MINVER#
  SASThreadCleanUp@Base 1.1.0
  SASThreadSetUp@Base 1.1.0
  SASUnlock@Base 1.1.0
+ SPHCompoundPCQAlloc@Base 1.2.0
+ SPHCompoundPCQAllocNoLock@Base 1.2.0
+ SPHCompoundPCQFree@Base 1.2.0
+ SPHCompoundPCQFreeNoLock@Base 1.2.0
+ SPHCompoundPCQNearAlloc@Base 1.2.0
+ SPHCompoundPCQNearAllocNoLock@Base 1.2.0
  SPHContextAddName@Base 1.1.0
  SPHContextAlloc@Base 1.1.0
  SPHContextCreate@Base 1.1.0
@@ -350,6 +356,7 @@ libsphde.so.1 libsphde1 #MINVER#
  SPHSinglePCQueueGetStride@Base 1.1.0
  SPHSinglePCQueueInit@Base 1.1.0
  SPHSinglePCQueueInitWithStride@Base 1.1.0
+ SPHSinglePCQueuePrefetch@Base 1.2.0
  SPHSinglePCQueueResetAsync@Base 1.1.0
  SPHSinglePCQueueSetCachePrefetch@Base 1.1.0
  SasLockOwner@Base 1.1.0
@@ -394,6 +401,7 @@ libsphde.so.1 libsphde1 #MINVER#
  _Z23SASIndexNearAllocNoLockPv@Base 1.1.0
  (subst)_Z23SASStringBTreeSpillInitPvj{size_t}@Base 1.1.0
  _Z23SASThreadDisableSigSegvv@Base 1.1.0
+ _Z23SASThreadSigSegvHandleriP9siginfo_tPv@Base 1.2.0
  _Z23SPHContextAddNameNoLockPvPcS_@Base 1.1.0
  _Z23SPHContextDestroyNoLockPv@Base 1.1.0
  (subst)_Z23SPHLFLoggerInitInternalPvj{size_t}tj@Base 1.1.0
@@ -435,7 +443,7 @@ libsphde.so.1 libsphde1 #MINVER#
  (subst)_Z30SPHLockFreeHeapNearAllocNoLockPv{size_t}@Base 1.1.0
  (subst)_Z31SPHLockFreeHeapAlignAllocNoLockPv{size_t}{size_t}@Base 1.1.0
  _Z32SASStringBTreeSpillAllocExtendedPvi@Base 1.1.0
- _Z32SPHSinglePCQueueSetCachePrefetchPv@Base 1.1.0
+ (optional)_Z32SPHSinglePCQueueSetCachePrefetchPv@Base 1.1.0
  _Z33SPHLockFreeHeapNotContainedNoLockPvS_@Base 1.1.0
  _ZN11SasLockListI11SasUserLockPvE8lockNodeES1_22sas_userlock_request_t@Base 1.1.0
  _ZN11SasUserLock10write_lockEPS_Pv@Base 1.1.0

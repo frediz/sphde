@@ -1,7 +1,11 @@
 #!/usr/bin/make -f
 export DH_VERBOSE = 1
 
-export DEB_BUILD_MAINT_OPTIONS := hardening=+all
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH),amd64)
+	export DEB_LDFLAGS_MAINT_STRIP = -pie
+endif
 
 %:
 	dh $@  --with autoreconf,pkgkde_symbolshelper

@@ -1,3 +1,13 @@
+sphde (1.3.0-1) unstable; urgency=medium
+
+  * New upstream release
+  * Skipped some tests because of timing issues on powerpc.
+  * Removed -pie build on amd64 which make gcc fail with -static
+  * Added new symbols and changed one to optional.
+  * Cleaned d/patches.
+
+ -- Frédéric Bonnard <frediz@linux.vnet.ibm.com>  Wed, 31 Aug 2016 08:40:30 -0400
+
 sphde (1.1.0-2) unstable; urgency=medium
 
   * Improved symbol file for better compatibility with Ubuntu and -O3
