@@ -36,6 +36,17 @@
 #define __arch_sas_PPR_medium()  __asm ("or 2,2,2;" ::: "memory")
 #endif
 
+static inline void
+__arch_pause (void)
+{
+  __asm__ (
+    "  nop;"
+   :
+   :
+   : "memory"
+  );
+}
+
 #if defined(__64BIT__) || defined(__powerpc64__) || defined(__ppc64__)
 #  define LPARX "ldarx"
 #  define STPCX "stdcx."
@@ -44,15 +55,22 @@
 #  define STPCX "stwcx."
 #endif
 
+#if GCC_VERSION >= 40700
+static inline void *
+__arch_fetch_and_add_ptr(void **pointer, long int delta)
+{
+  return __atomic_fetch_add (pointer, delta, __ATOMIC_RELAXED);
+}
+#else
 static inline void *
 __arch_fetch_and_add_ptr(void **pointer, long int delta)
 {
   void *temp = 0;
 
   __asm__ (
-    "0: "LPARX" %0,0,%1;"
+    "0: " LPARX " %0,0,%1;"
     "    add    11,%0,%2;"
-    "   "STPCX" 11,0,%1;"
+    "   " STPCX " 11,0,%1;"
     "    bne    0b;"
     : "+b" (temp)
     : "p" (pointer), "r" (delta)
@@ -60,16 +78,24 @@ __arch_fetch_and_add_ptr(void **pointer, long int delta)
   );
   return temp;
 }
+#endif
 
+#if GCC_VERSION >= 40700
+static inline long int
+__arch_fetch_and_add(long int *pointer, long int delta)
+{
+  return __atomic_fetch_add (pointer, delta, __ATOMIC_RELAXED);
+}
+#else
 static inline long int
 __arch_fetch_and_add(void *pointer, long int delta)
 {
   long int temp = delta;
   __asm__ (
     "    ori    12,%0,0;"
-    "0:	"LPARX" %0,0,%1;"
+    "0:	" LPARX " %0,0,%1;"
     "    add    11,%0,12;"
-    "	"STPCX" 11,0,%1;"
+    "	" STPCX " 11,0,%1;"
     "	bne     0b;"
    : "+b" (temp)
    : "p" (pointer)
@@ -77,7 +103,17 @@ __arch_fetch_and_add(void *pointer, long int delta)
   );
   return temp;
 }
+#endif
 
+#if GCC_VERSION >= 40700
+static inline int
+__arch_compare_and_swap (volatile long int *pointer,
+		long int oldval, long int newval)
+{
+  long int temp = oldval;
+  return __atomic_compare_exchange_n (pointer, &temp, newval, 1, __ATOMIC_ACQUIRE, __ATOMIC_RELAXED);
+}
+#else
 static inline int
 __arch_compare_and_swap (volatile long int *p, long int oldval,
   long int newval)
@@ -85,10 +121,10 @@ __arch_compare_and_swap (volatile long int *p, long int oldval,
   int ret;
 
   __asm__ __volatile__ (
-    "0:   "LPARX" %0,0,%1 ;"
+    "0:   " LPARX " %0,0,%1 ;"
     "      xor. %0,%3,%0;"
     "      bne 1f;"
-    "     "STPCX" %2,0,%1;"
+    "     " STPCX " %2,0,%1;"
     "      bne- 0b;"
     "1:    isync"
    : "=&r"(ret)
@@ -98,7 +134,15 @@ __arch_compare_and_swap (volatile long int *p, long int oldval,
 
   return ret == 0;
 }
+#endif
 
+#if GCC_VERSION >= 40700
+static inline long int
+__arch_atomic_swap (long int *pointer, long int replace)
+{
+  return __atomic_exchange_n (pointer, replace, __ATOMIC_RELAXED);
+}
+#else
 static inline long int
 __arch_atomic_swap (long int *p, long int replace)
 {
@@ -106,8 +150,8 @@ __arch_atomic_swap (long int *p, long int replace)
 
   __asm__ (
     "	 ori    12,%0,0;"
-    "0:	"LPARX"	%0,0,%1;"
-    "	"STPCX"	12,0,%1;"
+    "0:	" LPARX "	%0,0,%1;"
+    "	" STPCX "	12,0,%1;"
     "	bne     0b;"
     : "+b" (temp)
     : "p" (p)
@@ -116,39 +160,74 @@ __arch_atomic_swap (long int *p, long int replace)
 
   return temp;
 }
+#endif
 
+#if GCC_VERSION >= 40700
+static inline void
+__arch_atomic_inc(long int *pointer)
+{
+  const long int inc_val = 1L;
+
+  __atomic_fetch_add (pointer, inc_val, __ATOMIC_RELAXED);
+}
+#else
 static inline void
 __arch_atomic_inc(long int *p)
 {
   long int temp = 0;
 
   __asm__ __volatile__ (
-    "0:	"LPARX" %0,0,%1;"
+    "0:	" LPARX " %0,0,%1;"
     "	 addi   %0,%0,1;"
-    "	"STPCX" %0,0,%1;"
+    "	" STPCX " %0,0,%1;"
     "	 bne     0b;"
    : "+b" (temp)
    : "p" (p), "m" (*p)
    : "cr0", "memory"
   );
 }
+#endif
 
+#if GCC_VERSION >= 40700
+static inline void
+__arch_atomic_dec(long int *pointer)
+{
+  const long int inc_val = -1L;
+
+  __atomic_fetch_add (pointer, inc_val, __ATOMIC_RELAXED);
+}
+#else
 static inline void
 __arch_atomic_dec(long int *p)
 {
   long int temp = 0;
 
   __asm__ __volatile__ (
-    "0: "LPARX" %0,0,%1;"
+    "0: " LPARX " %0,0,%1;"
     "    addi   %0,%0,-1;"
-    "   "STPCX" %0,0,%1;"
+    "   " STPCX " %0,0,%1;"
     "    bne    0b;"
    : "+b" (temp)
    : "b" (p), "m" (*p)
    : "cr0", "memory"
   );
 }
+#endif
 
+#if GCC_VERSION >= 40700
+static inline void
+__arch_sas_spin_lock (volatile sas_spin_lock_t *lock)
+{
+  int oldval  = 0;
+  int newval  = 1;
+  int success = 0;
+
+  do {
+     success = __atomic_compare_exchange_n (lock, &oldval, newval, 1,
+    		 __ATOMIC_ACQUIRE, __ATOMIC_RELAXED);
+  } while (!success);
+}
+#else
 static inline void
 __arch_sas_spin_lock (volatile sas_spin_lock_t *lock)
 {
@@ -172,7 +251,22 @@ __arch_sas_spin_lock (volatile sas_spin_lock_t *lock)
        : "r" (lock), "r" (1)
        : "cr0", "memory");
 }
+#endif
 
+#if GCC_VERSION >= 40700
+static inline  int
+__arch_sas_spin_trylock (volatile sas_spin_lock_t *lock)
+{
+  int oldval  = 0;
+  int newval  = 1;
+  int success = 0;
+
+  success = __atomic_compare_exchange_n (lock, &oldval, newval, 1,
+    		 __ATOMIC_ACQUIRE, __ATOMIC_RELAXED);
+
+  return (!success);
+}
+#else
 static inline int
 __arch_sas_spin_trylock (volatile sas_spin_lock_t *lock)
 {
@@ -196,6 +290,6 @@ __arch_sas_spin_trylock (volatile sas_spin_lock_t *lock)
 
   return notlocked;
 }
-
+#endif
 
 #endif // _SASATOMIC_POWERPC_H

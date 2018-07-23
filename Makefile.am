@@ -9,17 +9,15 @@ dist_doc_DATA = COPYING ChangeLog.md
 SUBDIRS = src
 DIST_SUBDIRS = examples $(SUBDIRS)
 
+EXTRA_DIST = $(DX_CONFIG) doc/sphmaindox.h
+
+if DX_COND_doc
 man1_MANS = doc/man/man1/sasutil.1
-EXTRA_DIST = $(man1_MANS) doc
 
 $(man1_MANS): doc
 
 MOSTLYCLEANFILES = $(DX_CLEANFILES)
-
-distclean-local: distclean-local-doc
-.PHONY: distclean-local-doc
-distclean-local-doc:
-	-rm -rf doc/latex doc/doxygen_sqlite3.db
+endif DX_COND_doc
 
 ChangeLog.md:
 	$(am__cd) $(top_srcdir) && ./generate-changelog.sh > \

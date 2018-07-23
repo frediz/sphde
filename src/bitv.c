@@ -14,6 +14,7 @@
 //#define PRINT_DEBUG 1
 #include <bitv_priv.h>
 #include <stdio.h>
+#include "sasatom.h"
 
 void
 bitv_init (bitv_cb_t * cb, size_t unit)
@@ -89,7 +90,7 @@ bitv_alloc (bitv_cb_t * cb, bitv_word * bvec, size_t size)
 	      bitv_word new_msk;
 	      new_msk = cur_msk & ~req_msk;
 	      ;
-	      if (__sync_bool_compare_and_swap (bvec, cur_msk, new_msk))
+	      if (sas_compare_and_swap ((long int*)bvec, cur_msk, new_msk))
 		{		/* cur_msk was still valid and update successful */
 #ifdef PRINT_DEBUG
 		  printf ("i=%ld, req_msk=%lx\n", i, req_msk);
@@ -164,9 +165,9 @@ bitv_alloc_marked (bitv_cb_t * cb, bitv_word * bvec, bitv_word * endvec,
 	      ;
 	      if (__sync_bool_compare_and_swap (bvec, cur_msk, new_msk))
 		{		/* cur_msk was still valid and update successful */
-		  bitv_word end_mrk, chk_mrk;
+		  bitv_word end_mrk, chk_mrk __attribute__((unused));
 		  end_mrk = bitv_mask_to_end_mrk (req_msk);
-		  chk_mrk = __sync_fetch_and_or (endvec, end_mrk);
+		  chk_mrk = sas_fetch_and_or_long (endvec, end_mrk);
 #ifdef PRINT_DEBUG
 		  printf ("i=%ld, req_msk=%lx, end_mrk=%lx\n",
 			  i, req_msk, end_mrk);
@@ -351,9 +352,9 @@ bitv_aligned_alloc_marked (bitv_cb_t * cb, bitv_word * bvec,
 	      ;
 	      if (__sync_bool_compare_and_swap (bvec, cur_msk, new_msk))
 		{		/* cur_msk was still valid and update successful */
-		  bitv_word end_mrk, chk_mrk;
+		  bitv_word end_mrk, chk_mrk __attribute__((unused));
 		  end_mrk = bitv_mask_to_end_mrk (req_msk);
-		  chk_mrk = __sync_fetch_and_or (endvec, end_mrk);
+		  chk_mrk = sas_fetch_and_or_long (endvec, end_mrk);
 #ifdef PRINT_DEBUG
 		  printf ("i=%ld, req_msk=%lx, end_mrk=%lx\n",
 			  i, req_msk, end_mrk);
@@ -400,7 +401,7 @@ bitv_dealloc_internal (bitv_word * bvec, bitv_word offset, size_t alloc_units)
    verifies:
 	That alloc_units fit within a bitv_word
    returns:
-	0 if the deallocation was sucessful from this bitv_word
+	0 if the deallocation was successful from this bitv_word
 	or nonzero if something failed
 */
   bitv_word req_msk = bitv_units_to_mask (alloc_units);
@@ -410,9 +411,9 @@ bitv_dealloc_internal (bitv_word * bvec, bitv_word offset, size_t alloc_units)
     return -1;
 
   req_msk >>= offset;
-  prv_msk = __sync_fetch_and_or (bvec, req_msk);
+  prv_msk = sas_fetch_and_or_long (bvec, req_msk);
   /* Insure that we are deallocating units that were previously
-     allocated. If so the logical and of the orginal unit mask
+     allocated. If so the logical and of the original unit mask
      and the requested mask should be 0s. */
   prv_msk &= req_msk;
 #ifdef PRINT_DEBUG
@@ -431,7 +432,7 @@ bitv_dealloc (bitv_cb_t * cb, bitv_word * bvec, bitv_word at, size_t size)
    verifies:
 	That size fits within a bitv_word
    returns:
-	0 if the deallocation was sucessful from this bitv_word
+	0 if the deallocation was successful from this bitv_word
 	or nonzero if something failed
 */
   size_t alloc_units = bitv_round_unit (cb, size);
@@ -460,7 +461,7 @@ bitv_free_marked (bitv_cb_t * cb, bitv_word * bvec, bitv_word * endvec,
 	That an end mark is set between the starting offset and the
 	end of end makr vector.
    returns:
-	0 if the deallocation was sucessful from this bitv_word
+	0 if the deallocation was successful from this bitv_word
 	or nonzero if something failed
 */
   int rc = -1;
@@ -480,12 +481,12 @@ bitv_free_marked (bitv_cb_t * cb, bitv_word * bvec, bitv_word * endvec,
   if (endmrk && !(bgnmrk & bit_zero))
     {
       int units = __builtin_clzl (endmrk);
-      bitv_word chkmsk;
+      bitv_word chkmsk __attribute__((unused));
 
       alloc_units = units + 1;
       endmrk = bit_zero >> (offset + units);
 
-      chkmsk = __sync_fetch_and_and (endvec, ~endmrk);
+      chkmsk = sas_fetch_and_and_long (endvec, ~endmrk);
 
 #ifdef PRINT_DEBUG
       printf (" units=%ld, endmrk=%lx, chkmsk=%lx\n", units, endmrk, chkmsk);
