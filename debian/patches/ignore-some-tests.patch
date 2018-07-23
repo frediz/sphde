@@ -1,14 +1,22 @@
-Description: Ignore some tests
- For buildd, we need to skip some tests that fail on powerpc. Specifically :
- - src/sphgettime_t and src/sphgtod_t still fail and can be ignored for now as
- they compare the time taken with a constant value.
- - src/sphdirectpcqueue_ttt takes hours to complete.
-Origin: https://github.com/sphde/sphde/commit/d404fe4bed885c18080caee7db75f48914e4c66b
+From: =?utf-8?q?Fr=C3=A9d=C3=A9ric_Bonnard?= <frediz@linux.vnet.ibm.com>
+Date: Mon, 23 Jul 2018 17:45:00 +0200
+Subject: Ignore some tests
+
+For buildd, we need to skip some tests that fail on powerpc.  Specifically :
+- src/sphgettime_t and src/sphgtod_t still fail and can be ignored for
+now as they compare the time taken with a constant value.
+- src/sphdirectpcqueue_ttt takes hours to complete.
+
+https://github.com/sphde/sphde/commit/d404fe4bed885c18080caee7db75f48914e4c66b
 ---
-This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+ src/Makefile.am | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 0226359..ef8314d 100644
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
-@@ -155,11 +155,11 @@
+@@ -155,11 +155,11 @@ sasutil_LDADD        = libsphde.la
  
  # Test programs invoked with 'make check'
  TESTS = 
@@ -22,7 +30,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  sphgettime_t_SOURCES = tests/sphgettime_t.c
  sphgettime_t_LDADD   = .libs/libsphgettime.a libsphde.la
  
-@@ -245,7 +245,7 @@
+@@ -245,7 +245,7 @@ TESTS                 += sphsinglepcqueue_ttt
  sphsinglepcqueue_ttt_SOURCES = tests/sphsinglepcqueue_ttt.c
  sphsinglepcqueue_ttt_LDADD   = libsphde.la
  
