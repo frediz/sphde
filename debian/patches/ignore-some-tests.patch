@@ -13,10 +13,10 @@ https://github.com/sphde/sphde/commit/d404fe4bed885c18080caee7db75f48914e4c66b
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/src/Makefile.am b/src/Makefile.am
-index 0226359..ef8314d 100644
+index a7cc419..7d772da 100644
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
-@@ -155,11 +155,11 @@ sasutil_LDADD        = libsphde.la
+@@ -160,11 +160,11 @@ sasutil_LDADD        = libsphde.la
  
  # Test programs invoked with 'make check'
  TESTS = 
@@ -30,7 +30,7 @@ index 0226359..ef8314d 100644
  sphgettime_t_SOURCES = tests/sphgettime_t.c
  sphgettime_t_LDADD   = .libs/libsphgettime.a libsphde.la
  
-@@ -245,7 +245,7 @@ TESTS                 += sphsinglepcqueue_ttt
+@@ -250,7 +250,7 @@ TESTS                 += sphsinglepcqueue_ttt
  sphsinglepcqueue_ttt_SOURCES = tests/sphsinglepcqueue_ttt.c
  sphsinglepcqueue_ttt_LDADD   = libsphde.la
  
