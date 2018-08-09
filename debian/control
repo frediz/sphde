@@ -1,6 +1,6 @@
 Source: sphde
 Priority: optional
-Maintainer: Frédéric Bonnard <frediz@linux.vnet.ibm.com>
+Maintainer: Frédéric Bonnard <frediz@debian.org>
 Build-Depends: debhelper (>= 9), dh-autoreconf, doxygen, graphviz, pkg-kde-tools
 Standards-Version: 3.9.8
 Section: devel
