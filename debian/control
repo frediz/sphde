@@ -35,7 +35,7 @@ Description: Shared Persistent Heap Data Environment library development files
 Package: libsphde1
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}
 Description: Shared Persistent Heap Data Environment library
  SPHDE is composed of two major software layers: The Shared Address Space (SAS)
  layer provides the basic services for a shared address space and transparent,
@@ -47,7 +47,7 @@ Description: Shared Persistent Heap Data Environment library
 Package: sphde-utils
 Section: utils
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}
 Description: Shared Persistent Heap Data Environment library utilities
  SPHDE is composed of two major software layers: The Shared Address Space (SAS)
  layer provides the basic services for a shared address space and transparent,
