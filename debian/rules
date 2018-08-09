@@ -11,4 +11,4 @@ endif
 	dh $@  --with pkgkde_symbolshelper
 
 override_dh_installdocs-indep:
-	dh_installdocs -X.md5
+	dh_installdocs -X.md5 --doc-main-package=libsphde-doc
