@@ -8,7 +8,7 @@ ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH),amd64)
 endif
 
 %:
-	dh $@  --with autoreconf,pkgkde_symbolshelper
+	dh $@  --with pkgkde_symbolshelper
 
 override_dh_installdocs-indep:
 	dh_installdocs -X.md5
