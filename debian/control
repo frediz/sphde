@@ -5,6 +5,8 @@ Build-Depends: debhelper (>= 9), dh-autoreconf, doxygen, graphviz, pkg-kde-tools
 Standards-Version: 3.9.8
 Section: devel
 Homepage: https://github.com/sphde/sphde
+Vcs-Git: https://salsa.debian.org/debian/sphde.git
+Vcs-Browser: https://salsa.debian.org/debian/sphde
 
 Package: libsphde-doc
 Section: doc
