@@ -327,7 +327,27 @@ libsphde.so.1 libsphde1 #MINVER#
  SPHLogPortalGetCurrentLogger@Base 1.1.0
  SPHLogPortalGetLoggerByIndex@Base 1.1.0
  SPHLogPortalInit@Base 1.1.0
+ (optional)SPHMPMCQAllocStrideDirectHTM@Base 1.4.0
+ (optional)SPHMPMCQCreate@Base 1.4.0
+ (optional)SPHMPMCQCreateWithStride@Base 1.4.0
+ (optional)SPHMPMCQDestroy@Base 1.4.0
+ (optional)SPHMPMCQEntryDirectIsComplete@Base 1.4.0
+ (optional)SPHMPMCQFreeEntryDirect@Base 1.4.0
+ (optional)SPHMPMCQFreeSpace@Base 1.4.0
+ (optional)SPHMPMCQGetEntries@Base 1.4.0
+ (optional)SPHMPMCQGetEntryTemplate@Base 1.4.0
+ (optional)SPHMPMCQGetNextCompleteDirectHTM@Base 1.4.0
+ (optional)SPHMPMCQGetStride@Base 1.4.0
+ (optional)SPHMPMCQInit@Base 1.4.0
+ (optional)SPHMPMCQInitWithStride@Base 1.4.0
+ (optional)SPHMPMCQIsEmpty@Base 1.4.0
+ (optional)SPHMPMCQIsFull@Base 1.4.0
+ (optional)SPHMPMCQPrefetch@Base 1.4.0
+ (optional)SPHMPMCQResetAsync@Base 1.4.0
+ (optional)SPHMPMCQSetCachePrefetch@Base 1.4.0
+ (optional)SPHMPSCQGetNextCompleteDirect@Base 1.4.0
  SPHRemoveProjectContext@Base 1.1.0
+ (optional)SPHSPMCQAllocStrideDirect@Base 1.4.0
  SPHSetupAltProjectContext@Base 1.1.0
  SPHSetupProjectContext@Base 1.1.0
  SPHSinglePCQueueAllocRaw@Base 1.1.0
