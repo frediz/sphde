@@ -11,6 +11,7 @@ Vcs-Browser: https://salsa.debian.org/debian/sphde
 Package: libsphde-doc
 Section: doc
 Architecture: all
+Multi-Arch: foreign
 Depends: ${misc:Depends}
 Description: Shared Persistent Heap Data Environment library documentation files
  SPHDE is composed of two major software layers: The Shared Address Space (SAS)
@@ -23,6 +24,7 @@ Description: Shared Persistent Heap Data Environment library documentation files
 Package: libsphde-dev
 Section: libdevel
 Architecture: any
+Multi-Arch: same
 Depends: libsphde1 (= ${binary:Version}), ${misc:Depends}
 Description: Shared Persistent Heap Data Environment library development files
  SPHDE is composed of two major software layers: The Shared Address Space (SAS)
@@ -35,6 +37,7 @@ Description: Shared Persistent Heap Data Environment library development files
 Package: libsphde1
 Section: libs
 Architecture: any
+Multi-Arch: same
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Description: Shared Persistent Heap Data Environment library
  SPHDE is composed of two major software layers: The Shared Address Space (SAS)
