@@ -6,27 +6,55 @@ From Radovan : We need to define proper addresses (__SAS_BASE_ADDRESS,
 RegionSize, SegmentSize and __SAS_SHMAP_MAX) for mips/mipsel into
 "sasconf.h" file.
 
+Modified the patch because of failure to build on mips64el with gcc8 :
+In file included from sasutil.c:21:
+
+sasconf.h:105: error: "__SAS_BASE_ADDRESS" redefined [-Werror]
+ # define     __SAS_BASE_ADDRESS      0x60000000UL    /* 1,5GB */
+
+sasconf.h:98: note: this is the location of the previous definition
+ # define     __SAS_BASE_ADDRESS      0x4000000000L   /* 256GB */
+
+sasconf.h:106: error: "RegionSize" redefined [-Werror]
+ # define     RegionSize              0x10000000UL    /* 256MB */
+
+sasconf.h:99: note: this is the location of the previous definition
+ # define     RegionSize              0x2000000000L   /* 128GB */
+...
+
 Closes: #848233
 Thanks: Radovan Birdic
 ---
- src/sasconf.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ src/sasconf.h | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
 diff --git a/src/sasconf.h b/src/sasconf.h
-index f670630..ae073bc 100644
+index f670630..2d3c785 100644
 --- a/src/sasconf.h
 +++ b/src/sasconf.h
-@@ -101,6 +101,13 @@
- # define     __SAS_SHMAP_MAX         0x0001000000L   /*  16MB */
+@@ -93,12 +93,19 @@
+ # define     __SAS_SHMAP_MAX         0x01000000UL    /*  16MB */
  #endif
  
+-#ifdef __mips64
+-# define     __WORDSIZE_64
+-# define     __SAS_BASE_ADDRESS      0x4000000000L   /* 256GB */
+-# define     RegionSize              0x2000000000L   /* 128GB */
+-# define     SegmentSize             0x0010000000L   /* 256MB */
+-# define     __SAS_SHMAP_MAX         0x0001000000L   /*  16MB */
 +#ifdef __mips__
-+# define     __SAS_BASE_ADDRESS      0x60000000UL    /* 1,5GB */
-+# define     RegionSize              0x10000000UL    /* 256MB */
-+# define     SegmentSize             0x01000000UL    /*  16MB */
-+# define     __SAS_SHMAP_MAX         0x01000000UL    /*  16MB */
-+#endif
-+
++# ifdef __mips64
++#  define     __WORDSIZE_64
++#  define     __SAS_BASE_ADDRESS      0x4000000000L   /* 256GB */
++#  define     RegionSize              0x2000000000L   /* 128GB */
++#  define     SegmentSize             0x0010000000L   /* 256MB */
++#  define     __SAS_SHMAP_MAX         0x0001000000L   /*  16MB */
++# else
++#  define     __SAS_BASE_ADDRESS      0x60000000UL    /* 1,5GB */
++#  define     RegionSize              0x10000000UL    /* 256MB */
++#  define     SegmentSize             0x01000000UL    /*  16MB */
++#  define     __SAS_SHMAP_MAX         0x01000000UL    /*  16MB */
++# endif
+ #endif
+ 
  /* 
-  * If the platform is not recognized above, select some resonable default.
-  */
