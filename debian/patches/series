@@ -1,3 +1,4 @@
 ignore-some-tests.patch
 0002-Fix-compilation-error-with-gcc8.patch
 0003-Adjust-sasconf-for-mips64el.patch
+0004-Add-mips32-support-for-mips-and-mipsel.patch

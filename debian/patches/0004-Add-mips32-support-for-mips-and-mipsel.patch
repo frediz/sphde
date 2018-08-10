@@ -1,0 +1,32 @@
+From: =?utf-8?q?Fr=C3=A9d=C3=A9ric_Bonnard?= <frediz@debian.org>
+Date: Fri, 10 Aug 2018 14:38:53 +0200
+Subject: Add mips32 support for mips and mipsel
+
+From Radovan : We need to define proper addresses (__SAS_BASE_ADDRESS,
+RegionSize, SegmentSize and __SAS_SHMAP_MAX) for mips/mipsel into
+"sasconf.h" file.
+
+Closes: #848233
+Thanks: Radovan Birdic
+---
+ src/sasconf.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/src/sasconf.h b/src/sasconf.h
+index f670630..ae073bc 100644
+--- a/src/sasconf.h
++++ b/src/sasconf.h
+@@ -101,6 +101,13 @@
+ # define     __SAS_SHMAP_MAX         0x0001000000L   /*  16MB */
+ #endif
+ 
++#ifdef __mips__
++# define     __SAS_BASE_ADDRESS      0x60000000UL    /* 1,5GB */
++# define     RegionSize              0x10000000UL    /* 256MB */
++# define     SegmentSize             0x01000000UL    /*  16MB */
++# define     __SAS_SHMAP_MAX         0x01000000UL    /*  16MB */
++#endif
++
+ /* 
+  * If the platform is not recognized above, select some resonable default.
+  */
