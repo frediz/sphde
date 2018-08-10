@@ -1,0 +1,53 @@
+From: Radovan Birdic <Radovan.Birdic@imgtec.com>
+Date: Thu, 1 Dec 2016 11:47:31 +0000
+Subject: Adjust sasconf for mips64el
+
+Defines base address, region and segment size for mips64el.
+
+2016-12-01  Radovan Birdic  <Radovan.Birdic@imgtec.com>
+
+        * src/sasconf.h: Define address for mips64el.
+        * src/sassim.cpp: Adjust struct logNodeType.
+
+Signed-off-by:  Radovan Birdic  <Radovan.Birdic@imgtec.com>
+
+Closes: #844613
+Thanks: Radovan Birdic
+---
+ src/sasconf.h  | 8 ++++++++
+ src/sassim.cpp | 3 ++-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/src/sasconf.h b/src/sasconf.h
+index d8cc832..f670630 100644
+--- a/src/sasconf.h
++++ b/src/sasconf.h
+@@ -93,6 +93,14 @@
+ # define     __SAS_SHMAP_MAX         0x01000000UL    /*  16MB */
+ #endif
+ 
++#ifdef __mips64
++# define     __WORDSIZE_64
++# define     __SAS_BASE_ADDRESS      0x4000000000L   /* 256GB */
++# define     RegionSize              0x2000000000L   /* 128GB */
++# define     SegmentSize             0x0010000000L   /* 256MB */
++# define     __SAS_SHMAP_MAX         0x0001000000L   /*  16MB */
++#endif
++
+ /* 
+  * If the platform is not recognized above, select some resonable default.
+  */
+diff --git a/src/sassim.cpp b/src/sassim.cpp
+index 7eb87ac..a652f63 100644
+--- a/src/sassim.cpp
++++ b/src/sassim.cpp
+@@ -120,7 +120,8 @@ typedef struct
+ #ifdef __WORDSIZE_64
+ #if defined (__x86_64__) || \
+     (defined (__LITTLE_ENDIAN__) && defined (__powerpc64__)) \
+-    || defined (__aarch64__) || defined (__arm__)
++    || defined (__aarch64__) || defined (__arm__) \
++    || ((__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__) && defined(__mips64))
+   unsigned long offset:56;
+   unsigned int size:8;
+ #else
