@@ -1,0 +1,45 @@
+From: Rajalakshmi Srinivasaraghavan <raji@linux.vnet.ibm.com>
+Date: Wed, 1 Aug 2018 07:17:48 -0300
+Subject: Fix compilation error with gcc8
+
+gcc8 gives error as
+tests/sassim_t.c:153:12: error: passing argument 1 to restrict-qualified
+ parameter aliases with argument 3 [-Werror=restrict]
+   sprintf ((char *) baseAddr1, "SAS Page 0@%p", baseAddr1);
+            ^~~~~~~~~~~~~~~~~~
+tests/sassim_t.c:158:7: error: passing argument 1 to restrict-qualified
+ parameter aliases with argument 4 [-Werror=restrict]
+       sprintf (pageX_ptr, "SAS Page %ld@%p", page_num, pageX_ptr);
+
+If the buffer pointed is same as argument passed to sprintf, gcc8
+gives compilation error.
+Handled it by passing temporary pointers to  sprintf.
+
+Signed-off-by:  Rajalakshmi Srinivasaraghavan  <raji@linux.vnet.ibm.com>
+
+Closes: #897869
+---
+ src/tests/sassim_t.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/tests/sassim_t.c b/src/tests/sassim_t.c
+index 45167a0..79091ca 100644
+--- a/src/tests/sassim_t.c
++++ b/src/tests/sassim_t.c
+@@ -150,12 +150,14 @@ sassim_msync_test ()
+     }
+   page1_ptr = (char *) baseAddr1;
+   memset (baseAddr1, 0, blockSize);
+-  sprintf ((char *) baseAddr1, "SAS Page 0@%p", baseAddr1);
++  char *baseAddr2 = baseAddr1;
++  sprintf (baseAddr2, "SAS Page 0@%p", baseAddr1);
+   for (pageX_ptr = (page1_ptr + 4096); pageX_ptr < (page1_ptr + blockSize);
+        pageX_ptr += 4096)
+     {
++      char *pageX = pageX_ptr;
+       long page_num = (long) (pageX_ptr - page1_ptr) / 4096;
+-      sprintf (pageX_ptr, "SAS Page %ld@%p", page_num, pageX_ptr);
++      sprintf (pageX, "SAS Page %ld@%p", page_num, pageX_ptr);
+     } SASSIM_DUMP_BLOCK (baseAddr1, 32);
+   SASSIM_PRINT_MSG ("sasMsyncWrite (%p, 4096, %d)", page1_ptr, SAS_SYNC);
+   if ((rc = sasMsyncWrite (page1_ptr, 4096, SAS_SYNC)))

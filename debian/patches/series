@@ -1,1 +1,2 @@
 ignore-some-tests.patch
+0002-Fix-compilation-error-with-gcc8.patch
