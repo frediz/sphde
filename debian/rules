@@ -3,7 +3,7 @@ export DH_VERBOSE = 1
 
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
-ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH),amd64)
+ifeq ($(shell dpkg-architecture -qDEB_HOST_ARCH),amd64 mips mipsel)
 	export DEB_LDFLAGS_MAINT_STRIP = -pie
 endif
 
