@@ -1,8 +1,8 @@
-From: =?utf-8?q?Fr=C3=A9d=C3=A9ric_Bonnard?= <frediz@linux.vnet.ibm.com>
+From: =?utf-8?q?Fr=C3=A9d=C3=A9ric_Bonnard?= <frediz@debian.org>
 Date: Mon, 23 Jul 2018 17:45:00 +0200
 Subject: Ignore some tests
 
-For buildd, we need to skip some tests that fail on powerpc.  Specifically :
+For buildd, we need to skip some tests that fail on powerpc. Specifically :
 - src/sphgettime_t and src/sphgtod_t still fail and can be ignored for
 now as they compare the time taken with a constant value.
 - src/sphdirectpcqueue_ttt takes hours to complete.
