@@ -12,3 +12,6 @@ endif
 
 override_dh_installdocs-indep:
 	dh_installdocs -X.md5 --doc-main-package=libsphde-doc
+
+override_dh_auto_test:
+	dh_auto_test -- -j1
