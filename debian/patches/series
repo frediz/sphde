@@ -2,3 +2,4 @@
 0002-Fix-compilation-error-with-gcc8.patch
 0003-Adjust-sasconf-for-mips64el.patch
 0004-Add-mips32-support-for-mips-and-mipsel.patch
+0005-Fix-FTBFS-on-s390x.patch
